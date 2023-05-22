@@ -12,12 +12,14 @@
     h1 {
       text-align: center;
       color: #333;
+      margin-top: 0;
+      margin-bottom: 30px;
     }
 
     h3 {
       text-align: center;
       color: #666;
-      margin-bottom: 30px; /* Agregado */
+      margin-bottom: 30px;
     }
 
     #menu-container {
@@ -25,7 +27,7 @@
       justify-content: center;
       align-items: center;
       height: 80vh;
-      flex-direction: column; /* Agregado */
+      flex-direction: column;
     }
 
     .menu-option {
@@ -35,19 +37,13 @@
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
-      text-align: center; /* Agregado */
-      text-decoration: none; /* Agregado */
-      color: #333; /* Agregado */
+      text-align: center;
+      text-decoration: none;
+      color: #333;
     }
 
     .menu-option:hover {
       transform: scale(1.05);
-    }
-
-    .menu-option img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
     }
   </style>
 </head>
@@ -57,7 +53,6 @@
 
   <div id="menu-container">
     <a href="juego.html" class="menu-option">
-      <img src="ruta-a-imagen.png" alt="Imagen">
       <h2>Jugar al Truco</h2>
     </a>
     <a href="instrucciones.html" class="menu-option">
@@ -66,3 +61,4 @@
   </div>
 </body>
 </html>
+
