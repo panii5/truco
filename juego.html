@@ -7,15 +7,15 @@
     body {
       background-color: #f2f2f2;
       font-family: Arial, sans-serif;
-      margin: 0; /* Agregado */
-      padding: 0; /* Agregado */
+      margin: 0;
+      padding: 0;
     }
 
     h1 {
       text-align: center;
       color: #333;
       margin-bottom: 30px;
-      margin-top: 0; /* Agregado */
+      margin-top: 0;
     }
 
     .container {
@@ -28,7 +28,7 @@
 
     .player {
       margin-bottom: 20px;
-      text-align: center; /* Agregado */
+      text-align: center;
     }
 
     .btn {
@@ -48,6 +48,20 @@
     .btn:hover {
       background-color: #45a049;
     }
+
+    .card {
+      width: 80px;
+      height: 120px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #fff;
+      display: inline-block;
+      margin: 5px;
+    }
+
+    .hand {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -57,10 +71,30 @@
     <div class="player">
       <h2>Tu turno:</h2>
       <!-- Aquí puedes agregar la interfaz y los controles del jugador -->
+      <div id="player-hand" class="hand">
+        <!-- Representación visual de las cartas del jugador -->
+        <div class="card">1</div>
+        <div class="card">2</div>
+        <div class="card">3</div>
+        <!-- Agrega más cartas según las reglas del truco -->
+      </div>
+      <div id="player-actions">
+        <button class="btn">Jugar carta</button>
+        <button class="btn">Truco</button>
+        <button class="btn">Envido</button>
+        <!-- Otros botones y acciones según las reglas del truco -->
+      </div>
     </div>
     <div class="player">
       <h2>Turno de la IA:</h2>
       <!-- Aquí puedes agregar la lógica y la representación de la IA -->
+      <div id="ai-hand" class="hand">
+        <!-- Representación visual de las cartas de la IA -->
+        <div class="card">?</div>
+        <div class="card">?</div>
+        <div class="card">?</div>
+        <!-- Agrega más cartas según las reglas del truco -->
+      </div>
     </div>
 
     <button class="btn">Jugar carta</button>
