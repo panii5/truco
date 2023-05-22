@@ -73,10 +73,6 @@
       <!-- Aquí puedes agregar la interfaz y los controles del jugador -->
       <div id="player-hand" class="hand">
         <!-- Representación visual de las cartas del jugador -->
-        <div class="card" data-value="1" data-suit="espadas"></div>
-        <div class="card" data-value="2" data-suit="espadas"></div>
-        <div class="card" data-value="3" data-suit="espadas"></div>
-        <!-- Agrega más cartas según las reglas del truco -->
       </div>
       <div id="player-actions">
         <button class="btn" id="play-card-btn">Jugar carta</button>
@@ -90,10 +86,6 @@
       <!-- Aquí puedes agregar la lógica y la representación de la IA -->
       <div id="ai-hand" class="hand">
         <!-- Representación visual de las cartas de la IA -->
-        <div class="card" data-value="?" data-suit="?"></div>
-        <div class="card" data-value="?" data-suit="?"></div>
-        <div class="card" data-value="?" data-suit="?"></div>
-        <!-- Agrega más cartas según las reglas del truco -->
       </div>
     </div>
 
@@ -103,8 +95,173 @@
 
   <script>
     // Código JavaScript para el juego de truco
-    // Aquí puedes agregar la lógica y la funcionalidad del juego
+    // Variables globales del juego
+    let playerHand = []; // Cartas del jugador
+    let aiHand = []; // Cartas de la IA
+    let playerPoints = 0; // Puntos del jugador
+    let aiPoints = 0; // Puntos de la IA
+
+    // Función para inicializar el juego
+    function startGame() {
+      // Lógica para iniciar el juego y distribuir las cartas
+      playerHand = ['1 de Espadas', '2 de Espadas', '3 de Espadas']; // Ejemplo: Cartas iniciales del jugador
+      aiHand = ['4 de Espadas', '5 de Espadas', '6 de Espadas']; // Ejemplo: Cartas iniciales de la IA
+
+      renderPlayerHand(); // Renderizar las cartas del jugador
+      renderAIHand(); // Renderizar las cartas de la IA
+    }
+
+    // Función para renderizar las cartas del jugador
+    function renderPlayerHand() {
+      const playerHandElement = document.getElementById('player-hand');
+
+      // Limpiar las cartas anteriores
+      playerHandElement.innerHTML = '';
+
+      // Crear los elementos de carta y agregarlos al contenedor
+      for (let i = 0; i < playerHand.length; i++) {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        cardElement.textContent = playerHand[i];
+        playerHandElement.appendChild(cardElement);
+      }
+    }
+
+    // Función para renderizar las cartas de la IA
+    function renderAIHand() {
+      const aiHandElement = document.getElementById('ai-hand');
+
+      // Limpiar las cartas anteriores
+      aiHandElement.innerHTML = '';
+
+      // Crear los elementos de carta y agregarlos al contenedor
+      for (let i = 0; i < aiHand.length; i++) {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        cardElement.textContent = aiHand[i];
+        aiHandElement.appendChild(cardElement);
+      }
+    }
+
+    // Función para jugar una carta
+    function playCard() {
+      // Lógica para jugar una carta y actualizar el estado del juego
+      const playerCard = playerHand.shift(); // Obtener la primera carta del jugador
+      const aiCard = aiHand.shift(); // Obtener la primera carta de la IA
+
+      // Evaluar las cartas jugadas y determinar el ganador de la ronda
+      const roundWinner = determineRoundWinner(playerCard, aiCard);
+      updatePoints(roundWinner);
+
+      // Actualizar la representación visual de las cartas y los puntos
+      renderPlayerHand();
+      renderAIHand();
+      updatePointsDisplay();
+
+      // Verificar si se han jugado todas las cartas
+      if (playerHand.length === 0 && aiHand.length === 0) {
+        // Finalizar el juego y determinar el ganador general
+        determineGameWinner();
+      } else {
+        // Si quedan cartas por jugar, pasar al siguiente turno
+        switchTurn();
+      }
+    }
+
+    // Función para determinar el ganador de una ronda
+    function determineRoundWinner(playerCard, aiCard) {
+      // Lógica para evaluar las cartas y determinar el ganador de la ronda
+      // Puedes implementar las reglas del truco según tus necesidades
+      // Ejemplo de reglas: La carta con mayor valor gana
+
+      // Obtener los valores de las cartas
+      const playerCardValue = getCardValue(playerCard);
+      const aiCardValue = getCardValue(aiCard);
+
+      if (playerCardValue > aiCardValue) {
+        return 'player'; // El jugador gana la ronda
+      } else if (aiCardValue > playerCardValue) {
+        return 'ai'; // La IA gana la ronda
+      } else {
+        return 'draw'; // Empate en la ronda
+      }
+    }
+
+    // Función para obtener el valor de una carta
+    function getCardValue(card) {
+      // Lógica para obtener el valor de una carta según las reglas del truco
+      // Puedes implementar tus propias reglas aquí
+
+      // Ejemplo: As (1) < 2 < 3 < ... < 10 < 11 (Espada) < 12 (Basto) < 13 (Copa) < 14 (Oro)
+      const cardValue = parseInt(card.split(' ')[0]);
+      if (card.includes('Espada')) {
+        return cardValue + 10; // Sumar 10 para las cartas de Espada
+      } else {
+        return cardValue;
+      }
+    }
+
+    // Función para actualizar los puntos del juego
+    function updatePoints(roundWinner) {
+      // Lógica para actualizar los puntos según el ganador de la ronda
+      // Puedes implementar las reglas de puntuación del truco según tus necesidades
+      // Ejemplo de reglas: El ganador de la ronda suma un punto
+
+      if (roundWinner === 'player') {
+        playerPoints++;
+      } else if (roundWinner === 'ai') {
+        aiPoints++;
+      }
+    }
+
+    // Función para actualizar la representación visual de los puntos
+    function updatePointsDisplay() {
+      const playerPointsElement = document.getElementById('player-points');
+      const aiPointsElement = document.getElementById('ai-points');
+
+      playerPointsElement.textContent = `Puntos del Jugador: ${playerPoints}`;
+      aiPointsElement.textContent = `Puntos de la IA: ${aiPoints}`;
+    }
+
+    // Función para determinar el ganador general del juego
+    function determineGameWinner() {
+      // Lógica para determinar el ganador general del juego según los puntos acumulados
+      // Puedes implementar tus propias reglas aquí
+
+      // Ejemplo: El jugador con más puntos gana el juego
+      if (playerPoints > aiPoints) {
+        alert('¡Has ganado el juego!');
+      } else if (aiPoints > playerPoints) {
+        alert('La IA ha ganado el juego.');
+      } else {
+        alert('El juego ha terminado en empate.');
+      }
+    }
+
+    // Función para cambiar el turno entre el jugador y la IA
+    function switchTurn() {
+      // Lógica para cambiar el turno entre el jugador y la IA
+      // Puedes implementar tus propias reglas aquí
+      // Ejemplo: Alternar el turno en cada ronda
+
+      // Intercambiar las manos de las cartas entre el jugador y la IA
+      const tempHand = playerHand;
+      playerHand = aiHand;
+      aiHand = tempHand;
+
+      // Actualizar la representación visual de las cartas
+      renderPlayerHand();
+      renderAIHand();
+    }
+
+    // Event listeners para los botones
+    document.getElementById('play-card-btn').addEventListener('click', playCard);
+    document.getElementById('truco-btn').addEventListener('click', respondTruco);
+    document.getElementById('envido-btn').addEventListener('click', respondEnvido);
+    document.getElementById('next-round-btn').addEventListener('click', startGame);
+
+    // Iniciar el juego al cargar la página
+    startGame();
   </script>
 </body>
 </html>
-
