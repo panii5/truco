@@ -104,8 +104,8 @@
     // Función para inicializar el juego
     function startGame() {
       // Lógica para iniciar el juego y distribuir las cartas
-      playerHand = ['1 de Espadas', '2 de Espadas', '3 de Espadas']; // Ejemplo: Cartas iniciales del jugador
-      aiHand = ['4 de Espadas', '5 de Espadas', '6 de Espadas']; // Ejemplo: Cartas iniciales de la IA
+      playerHand = ['4 de Espadas', '5 de Basto', '6 de Oro']; // Ejemplo: Cartas iniciales del jugador
+      aiHand = ['2 de Espadas', '3 de Basto', '7 de Oro']; // Ejemplo: Cartas iniciales de la IA
 
       renderPlayerHand(); // Renderizar las cartas del jugador
       renderAIHand(); // Renderizar las cartas de la IA
@@ -138,7 +138,7 @@
       for (let i = 0; i < aiHand.length; i++) {
         const cardElement = document.createElement('div');
         cardElement.classList.add('card');
-        cardElement.textContent = aiHand[i];
+        cardElement.textContent = '?'; // Las cartas de la IA no son visibles
         aiHandElement.appendChild(cardElement);
       }
     }
