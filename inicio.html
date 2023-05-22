@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Juego de Truco contra IA</title>
+  <style>
+    /* Estilos CSS para la página */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #game-board {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 400px;
+    }
+
+    #message {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Juego de Truco contra IA</h1>
+  
+  <div id="game-board">
+    <!-- Aquí se mostrará el tablero de juego -->
+    <div id="player-hand"></div>
+    <div id="opponent-hand"></div>
+    <div id="played-cards"></div>
+  </div>
+
+  <div id="message"></div>
+
+  <button onclick="playCard()">Jugar carta</button>
+  
+  <script src="game.js"></script>
+  <!-- Agrega cualquier otro archivo JavaScript necesario para el juego -->
+</body>
+</html>
