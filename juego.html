@@ -73,15 +73,15 @@
       <!-- Aquí puedes agregar la interfaz y los controles del jugador -->
       <div id="player-hand" class="hand">
         <!-- Representación visual de las cartas del jugador -->
-        <div class="card">1</div>
-        <div class="card">2</div>
-        <div class="card">3</div>
+        <div class="card" data-value="1" data-suit="espadas"></div>
+        <div class="card" data-value="2" data-suit="espadas"></div>
+        <div class="card" data-value="3" data-suit="espadas"></div>
         <!-- Agrega más cartas según las reglas del truco -->
       </div>
       <div id="player-actions">
-        <button class="btn">Jugar carta</button>
-        <button class="btn">Truco</button>
-        <button class="btn">Envido</button>
+        <button class="btn" id="play-card-btn">Jugar carta</button>
+        <button class="btn" id="truco-btn">Truco</button>
+        <button class="btn" id="envido-btn">Envido</button>
         <!-- Otros botones y acciones según las reglas del truco -->
       </div>
     </div>
@@ -90,15 +90,21 @@
       <!-- Aquí puedes agregar la lógica y la representación de la IA -->
       <div id="ai-hand" class="hand">
         <!-- Representación visual de las cartas de la IA -->
-        <div class="card">?</div>
-        <div class="card">?</div>
-        <div class="card">?</div>
+        <div class="card" data-value="?" data-suit="?"></div>
+        <div class="card" data-value="?" data-suit="?"></div>
+        <div class="card" data-value="?" data-suit="?"></div>
         <!-- Agrega más cartas según las reglas del truco -->
       </div>
     </div>
 
-    <button class="btn">Jugar carta</button>
+    <button class="btn" id="next-round-btn">Siguiente Ronda</button>
     <!-- Puedes agregar más botones y funcionalidades según tu juego -->
   </div>
+
+  <script>
+    // Código JavaScript para el juego de truco
+    // Aquí puedes agregar la lógica y la funcionalidad del juego
+  </script>
 </body>
 </html>
+
