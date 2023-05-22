@@ -254,11 +254,25 @@
       renderAIHand();
     }
 
-    // Event listeners para los botones
-    document.getElementById('play-card-btn').addEventListener('click', playCard);
+     // Event listeners para los botones
+    document.getElementById('play-card-btn').addEventListener('click', function() {
+      // Validar que el jugador tiene cartas para jugar
+      if (playerHand.length > 0) {
+        playCard();
+      } else {
+        alert('No tienes más cartas para jugar. Inicia una nueva ronda.');
+      }
+    });
     document.getElementById('truco-btn').addEventListener('click', respondTruco);
     document.getElementById('envido-btn').addEventListener('click', respondEnvido);
-    document.getElementById('next-round-btn').addEventListener('click', startGame);
+    document.getElementById('next-round-btn').addEventListener('click', function() {
+      // Jugar una carta por la IA antes de pasar a la siguiente ronda
+      if (aiHand.length > 0) {
+        aiPlayCard();
+      }
+      // Pasar a la siguiente ronda
+      startGame();
+    });
 
     // Iniciar el juego al cargar la página
     startGame();
