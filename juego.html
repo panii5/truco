@@ -11,8 +11,7 @@
 
     .container {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: space-around;
       margin-top: 50px;
     }
 
@@ -32,15 +31,26 @@
       background-color: #fff;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
     }
 
     .card.back {
       background-color: #ccc;
     }
 
+    .card.played {
+      transform: translateX(-50%);
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
     .btn {
-      display: block;
-      margin: 20px auto;
+      margin: 0 10px;
       padding: 10px 20px;
       background-color: #4caf50;
       color: white;
@@ -52,41 +62,20 @@
     .btn:hover {
       background-color: #45a049;
     }
-
-    .played-cards {
-      margin-top: 20px;
-    }
-
-    .played-card {
-      width: 80px;
-      height: 120px;
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin-right: 10px;
-      display: inline-block;
-    }
-
-    /* Estilos adicionales */
-    .horizontal-layout {
-      flex-direction: row;
-      align-items: center;
-    }
-
-    .horizontal-layout .hand {
-      flex-direction: row;
-    }
   </style>
 </head>
 <body>
   <h1>Juego de Truco</h1>
 
   <div class="container">
-    <div class="player horizontal-layout">
+    <div class="player">
       <h2>Tus cartas:</h2>
-      <div id="player-hand" class="hand"></div>
-      <div id="player-actions">
-        <button class="btn" id="play-card-btn">Jugar carta</button>
+      <div id="player-hand" class="hand">
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+      </div>
+      <div class="btn-container">
         <button class="btn" id="truco-btn">Truco</button>
         <button class="btn" id="envido-btn">Envido</button>
       </div>
@@ -100,22 +89,13 @@
         <div class="card back"></div>
       </div>
     </div>
-
-    <div class="played-cards">
-      <h2>Cartas jugadas:</h2>
-      <div id="played-cards-container"></div>
-    </div>
-
-    <button class="btn" id="next-round-btn">Siguiente Ronda</button>
   </div>
 
-  <script src="ia.js"></script>
   <script>
     // Variables globales para el juego
     let playerHand = [];
     let aiHand = [];
     let currentPlayer = "player";
-    let playedCards = [];
 
     // Función para iniciar el juego
     function startGame() {
@@ -165,12 +145,14 @@
     // Función para renderizar las cartas del jugador
     function renderPlayerHand() {
       const playerHandElement = document.getElementById("player-hand");
+      playerHandElement.innerHTML = "";
 
       for (let i = 0; i < playerHand.length; i++) {
         const card = playerHand[i];
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");
         cardElement.textContent = card;
+        cardElement.addEventListener("click", playCard);
         playerHandElement.appendChild(cardElement);
       }
     }
@@ -178,6 +160,7 @@
     // Función para renderizar las cartas de la IA
     function renderAIHand() {
       const aiHandElement = document.getElementById("ai-hand");
+      aiHandElement.innerHTML = "";
 
       for (let i = 0; i < aiHand.length; i++) {
         const cardElement = document.createElement("div");
@@ -188,54 +171,14 @@
 
     // Función para jugar una carta
     function playCard() {
-      const playerHandElement = document.getElementById("player-hand");
-      const playedCardsContainer = document.getElementById("played-cards-container");
-
-      const selectedCardElement = playerHandElement.querySelector(".card.selected");
-      if (selectedCardElement) {
-        const cardValue = selectedCardElement.textContent;
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("played-card");
-        cardElement.textContent = cardValue;
-        playedCardsContainer.appendChild(cardElement);
-
-        selectedCardElement.remove();
-        const cardIndex = Array.from(playerHandElement.children).indexOf(selectedCardElement);
-        playedCards.push(playerHand.splice(cardIndex, 1)[0]);
-
+      if (currentPlayer === "player") {
+        const selectedCard = this.textContent;
+        const cardIndex = playerHand.indexOf(selectedCard);
+        playerHand.splice(cardIndex, 1);
+        this.classList.add("played");
         currentPlayer = "ai";
         aiPlayCard();
-
-        // Actualizar el turno y las acciones disponibles
-        updateTurn();
-        updateActions();
       }
-    }
-
-    // Función para que la IA juegue una carta
-    function aiPlayCard() {
-      // Aquí es donde se debe incluir el código de la IA para decidir qué carta jugar
-      // El código de la IA debe estar en un archivo separado llamado "ia.js" y debe estar referenciado en la línea <script src="ia.js"></script>
-      // Ejemplo de código de la IA:
-      const aiHandElement = document.getElementById("ai-hand");
-      const playedCardsContainer = document.getElementById("played-cards-container");
-
-      const randomIndex = Math.floor(Math.random() * aiHand.length);
-      const cardValue = aiHand[randomIndex];
-
-      const cardElement = document.createElement("div");
-      cardElement.classList.add("played-card");
-      cardElement.textContent = cardValue;
-      playedCardsContainer.appendChild(cardElement);
-
-      aiHand[randomIndex] = null;
-      playedCards.push(cardValue);
-
-      currentPlayer = "player";
-
-      // Actualizar el turno y las acciones disponibles
-      updateTurn();
-      updateActions();
     }
 
     // Función para actualizar el turno actual
@@ -262,40 +205,20 @@
       }
     }
 
-    // Función para reiniciar el juego
-    function resetGame() {
-      playerHand = [];
-      aiHand = [];
+    // Lógica para que la IA juegue una carta
+    function aiPlayCard() {
+      const availableCards = getAvailableCards();
+      const randomIndex = Math.floor(Math.random() * availableCards.length);
+      const card = availableCards[randomIndex];
+      aiHand.push(card);
+      renderAIHand();
       currentPlayer = "player";
-      playedCards = [];
-
-      const playerHandElement = document.getElementById("player-hand");
-      const aiHandElement = document.getElementById("ai-hand");
-      const playedCardsContainer = document.getElementById("played-cards-container");
-
-      while (playerHandElement.firstChild) {
-        playerHandElement.firstChild.remove();
-      }
-
-      while (aiHandElement.firstChild) {
-        aiHandElement.firstChild.remove();
-      }
-
-      while (playedCardsContainer.firstChild) {
-        playedCardsContainer.firstChild.remove();
-      }
-
-      startGame();
       updateTurn();
-      updateActions();
     }
 
-    // Event listeners
-    document.getElementById("play-card-btn").addEventListener("click", playCard);
-    document.getElementById("next-round-btn").addEventListener("click", resetGame);
-
-    // Iniciar el juego al cargar la página
+    // Lógica para inicializar el juego cuando se carga la página
     startGame();
   </script>
+  <script src="ia.js"></script>
 </body>
 </html>
