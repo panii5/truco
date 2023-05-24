@@ -66,19 +66,25 @@
       margin-right: 10px;
       display: inline-block;
     }
+
+    /* Estilos adicionales */
+    .horizontal-layout {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .horizontal-layout .hand {
+      flex-direction: row;
+    }
   </style>
 </head>
 <body>
   <h1>Juego de Truco</h1>
 
   <div class="container">
-    <div class="player">
+    <div class="player horizontal-layout">
       <h2>Tus cartas:</h2>
-      <div id="player-hand" class="hand">
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-      </div>
+      <div id="player-hand" class="hand"></div>
       <div id="player-actions">
         <button class="btn" id="play-card-btn">Jugar carta</button>
         <button class="btn" id="truco-btn">Truco</button>
@@ -210,7 +216,6 @@
     function aiPlayCard() {
       // Aquí es donde se debe incluir el código de la IA para decidir qué carta jugar
       // El código de la IA debe estar en un archivo separado llamado "ia.js" y debe estar referenciado en la línea <script src="ia.js"></script>
-  <script src="ia.js"></script>
       // Ejemplo de código de la IA:
       const aiHandElement = document.getElementById("ai-hand");
       const playedCardsContainer = document.getElementById("played-cards-container");
@@ -294,4 +299,3 @@
   </script>
 </body>
 </html>
-
