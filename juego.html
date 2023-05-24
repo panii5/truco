@@ -33,6 +33,10 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
+    .card.back {
+      background-color: #ccc;
+    }
+
     .btn {
       display: block;
       margin: 20px auto;
@@ -70,9 +74,9 @@
     <div class="player">
       <h2>Turno de la IA:</h2>
       <div id="ai-hand" class="hand">
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
+        <div class="card back"></div>
+        <div class="card back"></div>
+        <div class="card back"></div>
       </div>
     </div>
 
@@ -80,7 +84,86 @@
   </div>
 
   <script>
-    // Aquí irá el código JavaScript
+    // Variables globales para el juego
+    let playerHand = [];
+    let aiHand = [];
+    let currentPlayer = "player";
+
+    // Función para iniciar el juego
+    function startGame() {
+      playerHand = getRandomCards(3);
+      aiHand = getEmptyHand();
+      renderPlayerHand();
+      renderAIHand();
+    }
+
+    // Función para generar una mano vacía para la IA
+    function getEmptyHand() {
+      return [null, null, null];
+    }
+
+    // Función para obtener tres cartas al azar de la baraja española sin 8 y 9
+    function getRandomCards(numCards) {
+      const availableCards = getAvailableCards();
+      const randomCards = [];
+
+      for (let i = 0; i < numCards; i++) {
+        const randomIndex = Math.floor(Math.random() * availableCards.length);
+        const card = availableCards.splice(randomIndex, 1)[0];
+        randomCards.push(card);
+      }
+
+      return randomCards;
+    }
+
+    // Función para obtener las cartas disponibles de la baraja española sin 8 y 9
+    function getAvailableCards() {
+      const baraja = [
+        "1 de Espadas", "1 de Copas", "1 de Oros", "1 de Bastos",
+        "2 de Espadas", "2 de Copas", "2 de Oros", "2 de Bastos",
+        // ...resto de las cartas...
+      ];
+
+      return baraja.filter(card => !card.includes("8") && !card.includes("9"));
+    }
+
+    // Función para renderizar las cartas del jugador
+    function renderPlayerHand() {
+      const playerHandElement = document.getElementById("player-hand");
+
+      for (let i = 0; i < playerHand.length; i++) {
+        const card = playerHand[i];
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+        cardElement.textContent = card;
+        playerHandElement.appendChild(cardElement);
+      }
+    }
+
+    // Función para renderizar las cartas de la IA
+    function renderAIHand() {
+      const aiHandElement = document.getElementById("ai-hand");
+
+      for (let i = 0; i < aiHand.length; i++) {
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card", "back");
+        aiHandElement.appendChild(cardElement);
+      }
+    }
+
+    // Función para avanzar a la siguiente ronda
+    function nextRound() {
+      // Lógica para avanzar a la siguiente ronda y reiniciar el estado del juego
+    }
+
+    // Eventos de click para los botones
+    document.getElementById("play-card-btn").addEventListener("click", playCard);
+    document.getElementById("truco-btn").addEventListener("click", respondToTruco);
+    document.getElementById("envido-btn").addEventListener("click", respondToEnvido);
+    document.getElementById("next-round-btn").addEventListener("click", nextRound);
+
+    // Lógica para inicializar el juego cuando se carga la página
+    startGame();
   </script>
 </body>
 </html>
