@@ -43,6 +43,33 @@
       transform: translateX(-50%);
     }
 
+    .card-mini {
+      width: 40px;
+      height: 60px;
+      background-color: #fff;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+    }
+
+    .card-mini.played {
+      margin-top: 0;
+    }
+
+    .cards-played {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .cards-played .card {
+      margin: 0 5px;
+    }
+
+    .cards-played .card-mini {
+      margin: 0 2px;
+    }
+
     .btn-container {
       display: flex;
       justify-content: center;
@@ -79,6 +106,10 @@
         <button class="btn" id="truco-btn">Truco</button>
         <button class="btn" id="envido-btn">Envido</button>
       </div>
+      <div class="cards-played" id="player-cards-played">
+        <div class="card-mini"></div>
+        <div class="card-mini"></div>
+      </div>
     </div>
 
     <div class="player">
@@ -88,6 +119,10 @@
         <div class="card back"></div>
         <div class="card back"></div>
       </div>
+      <div class="cards-played" id="ai-cards-played">
+        <div class="card-mini"></div>
+        <div class="card-mini"></div>
+      </div>
     </div>
   </div>
 
@@ -95,14 +130,20 @@
     // Variables globales para el juego
     let playerHand = [];
     let aiHand = [];
+    let playerCardsPlayed = [];
+    let aiCardsPlayed = [];
     let currentPlayer = "player";
 
     // Función para iniciar el juego
     function startGame() {
       playerHand = getRandomCards(3);
       aiHand = getEmptyHand();
+      playerCardsPlayed = [];
+      aiCardsPlayed = [];
       renderPlayerHand();
       renderAIHand();
+      renderPlayerCardsPlayed();
+      renderAICardsPlayed();
     }
 
     // Función para generar una mano vacía para la IA
@@ -169,12 +210,41 @@
       }
     }
 
+    // Función para renderizar las cartas jugadas por el jugador
+    function renderPlayerCardsPlayed() {
+      const playerCardsPlayedElement = document.getElementById("player-cards-played");
+      playerCardsPlayedElement.innerHTML = "";
+
+      for (let i = 0; i < playerCardsPlayed.length; i++) {
+        const card = playerCardsPlayed[i];
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card-mini");
+        cardElement.textContent = card;
+        playerCardsPlayedElement.appendChild(cardElement);
+      }
+    }
+
+    // Función para renderizar las cartas jugadas por la IA
+    function renderAICardsPlayed() {
+      const aiCardsPlayedElement = document.getElementById("ai-cards-played");
+      aiCardsPlayedElement.innerHTML = "";
+
+      for (let i = 0; i < aiCardsPlayed.length; i++) {
+        const card = aiCardsPlayed[i];
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card-mini");
+        cardElement.textContent = card;
+        aiCardsPlayedElement.appendChild(cardElement);
+      }
+    }
+
     // Función para jugar una carta
     function playCard() {
       if (currentPlayer === "player") {
         const selectedCard = this.textContent;
         const cardIndex = playerHand.indexOf(selectedCard);
         playerHand.splice(cardIndex, 1);
+        playerCardsPlayed.push(selectedCard);
         this.classList.add("played");
         currentPlayer = "ai";
         aiPlayCard();
@@ -211,7 +281,9 @@
       const randomIndex = Math.floor(Math.random() * availableCards.length);
       const card = availableCards[randomIndex];
       aiHand.push(card);
+      aiCardsPlayed.push(card);
       renderAIHand();
+      renderAICardsPlayed();
       currentPlayer = "player";
       updateTurn();
     }
@@ -222,3 +294,4 @@
   <script src="ia.js"></script>
 </body>
 </html>
+
